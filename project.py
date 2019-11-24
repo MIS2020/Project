@@ -1,4 +1,4 @@
-#Tiffany Nguyen
+#Tiffany Nguyen, Catherine Fudal, Shelley Han
 #Section 001
 
 import pandas as pd
