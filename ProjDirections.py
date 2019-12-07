@@ -1,7 +1,5 @@
 import pandas as pd
 import requests
-import matplotlib.pyplot as plt
-
 
 
 coord = "-73.989,40.733;-74,40.733" 
