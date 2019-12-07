@@ -31,16 +31,4 @@ steps = r['routes'][0]['legs'][0]
 for d in range(len(steps)):
     c+=1
     print("Step "+str(c)+": "+r['routes'][0]['legs'][0]['steps'][d]['maneuver']['instruction'])
-    
-    
-
-
-
-#maps
-#how to show distance from specific location on a map
-#show how far away from pinpointed location
-#show that distance on a map
-#popup with directions 
-
-#see if you can make multiple locations pop up on map
-
+ 
