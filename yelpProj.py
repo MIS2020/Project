@@ -5,9 +5,11 @@ import tkinter
 import matplotlib.pyplot as plt
 from tkinter import ttk
 
-apiKey = "Vf_kMcMZt6iW4-7OIxCtGtrAfayeobOiIYBw37cfDIorGutNbHVOKcWfhklmPGx6XodG16Us2o7O5ZRaC1RytNIcUghLuBF1hCK3q9V_U4CJLVztVZQtFLTui8vuXXYx"
+apiKeyYelp = "Vf_kMcMZt6iW4-7OIxCtGtrAfayeobOiIYBw37cfDIorGutNbHVOKcWfhklmPGx6XodG16Us2o7O5ZRaC1RytNIcUghLuBF1hCK3q9V_U4CJLVztVZQtFLTui8vuXXYx"
 endpoint = "https://api.yelp.com/v3/"
-headers = {'Authorization': 'Bearer %s' % apiKey}
+headers = {'Authorization': 'Bearer %s' % apiKeyYelp}
+
+apiKeyMap = "pk.eyJ1Ijoic2hlbGxleWhhbiIsImEiOiJjazNzeWw1MnYwN2V5M21teDl4cW40MzR0In0.BvL2yQuNXzZLALCfNbFnKg"
 
 #Function to run the main query
 def query():
@@ -130,7 +132,7 @@ def ratio(a):
 def detail(b):
     win = tkinter.Toplevel()
     win.title("Restaurant detail")
-    win.geometry("300x500")
+    win.geometry("800x500")
     query2 = f'businesses/'
     url2 = endpoint + query2 + str(b[1][b[0]])
     a = requests.get(url2, headers=headers).json()
@@ -180,13 +182,71 @@ def detail(b):
             else:
                 label12 = tkinter.Label(win, text = f"Sunday: {':'.join(a['hours'][0]['open'][z]['start'][i:i+2] for i in range(0, len(a['hours'][0]['open'][z]['start']), 2))} - {':'.join(a['hours'][0]['open'][z]['end'][i:i+2] for i in range(0, len(a['hours'][0]['open'][z]['end']), 2))}")
                 label12.grid(sticky = "W")
-    label13 = tkinter.Label(win, text = f"{a['coordinates']['longitude']}:{a['coordinates']['latitude']}")
-    label13.grid(sticky = "W")
+    long = a['coordinates']['longitude']
+    lat = a['coordinates']['latitude']
+
+    # #Create textbox for user input of destination coordinates
+    # destination = tkinter.Label(win, text="Enter a location:")
+    # destination.grid(row = 0, column = 3, sticky = "W")
+    # name1 = tkinter.StringVar(None) #None = no default value; blank entry box
+    # userInput2 = tkinter.Entry(win, textvariable=name1, width=40) #Entry is always string
+    # userInput2.grid(row = 0, column = 4, sticky = "W")
+
+    #Create textbox for user input of their location coordinates
+    yourLoc = tkinter.Label(win, text="Enter your location:")
+    yourLoc.grid(row = 1, column = 4, sticky = "W")
+    name2 = tkinter.StringVar(None) #None = no default value; blank entry box
+    userInput3 = tkinter.Entry(win, textvariable=name2, width=40) #Entry is always string
+    userInput3.grid(row = 1, column = 5, sticky = "W")
+
+    #Create button to show directions
+    button3 = tkinter.Button(win, text="Show Directions", command=lambda:[direction(query1(long,lat,userInput3.get()))])
+    button3.grid(row = 2, column = 4, sticky = "W")
+
+def query1(dlong, dlat, yourLoc='-75.3436,40.0371'):
+    try:
+        #-73.989,40.733 -74,40.733
+        coord = f'{yourLoc.strip()};{dlong},{dlat}'
+        endpoint = "https://api.mapbox.com/directions/v5/mapbox/driving-traffic/" #/directions/v5/{profile}/{coordinates}
+        query='.json?access_token='
+
+        url = endpoint + coord + query + apiKeyMap + "&overview=full" + "&steps=true"
+        r = requests.get(url).json()
+        return r
+        
+    except:
+        print("Something went wrong :c")
+
+def direction(r):
+    window = tkinter.Toplevel()
+
+    dist= (r['routes'][0]['distance'])/1609.344 #in meters
+    dura= (r['routes'][0]['duration'])/60 #in seconds
+    start= r['waypoints'][0]['name']
+    end= r['waypoints'][1]['name']
+
+    label = tkinter.Label(window, text = f'Distance: {dist:.2f} miles away')
+    label.grid(sticky = "W") 
+    label1 = tkinter.Label(window, text = f'Duration: {dura:.0f} minutes away')
+    label1.grid(sticky = "W") 
+    label2 = tkinter.Label(window, text = f'Start Location: {start}') #starting street name
+    label2.grid(sticky = "W") 
+    label3 = tkinter.Label(window, text = f'End Location: {end}') #ending street name
+    label3.grid(sticky = "W")
+    label4 = tkinter.Label(window, text = "Directions:")
+    label4.grid(sticky = "W")
+
+    ct=0
+    steps = r['routes'][0]['legs'][0]['steps']
+    for s in range(len(steps)):
+        ct+=1
+        label5 = tkinter.Label(window, text = f"Step {str(ct)}: {steps[s]['maneuver']['instruction']}")
+        label5.grid(sticky = "W")
 
 #Create main window
 root = tkinter.Tk()
 root.title("Food")
-root.geometry("1500x1500")
+root.geometry("1200x1200")
 
 #Create textbox for user input of location
 label = tkinter.Label(root, text = "Enter a city, state:")
@@ -221,7 +281,7 @@ button1 = tkinter.Button(root, text="Ratio", width = 15, command = lambda: [quer
 button1.grid (row = 1, column = 6)
 
 #Create button to show restaurant details
-button2 = tkinter.Button(root, text = "Show detail", width = 15, command = lambda: [query(), detail(main(query()))])
+button2 = tkinter.Button(root, text = "Show detail", width = 15, command = lambda: [detail(main(query()))])
 button2.grid(row = 3, column = 3)
 
 #Display window
