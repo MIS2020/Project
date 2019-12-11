@@ -53,10 +53,11 @@ url2= endpoint2+str(centerlat)+"%2C%20"+str(centerlong)+query2+key
 r2 = requests.get(url2)
 print(r2) # Get the image for our map
 
+#okay starting from here im lost as hell LOL
 # Import the library to read the image
 im = imageio.imread(r2.content)# Read the image from the request
 
-
+#idk how to show the image
 plt.figure(figsize=(20,20))# Create the figure
 plt.imshow(im, origin = (centerlat,centerlong))# Show the image
 plt.show()
