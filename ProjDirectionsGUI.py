@@ -25,20 +25,23 @@ def direction(r):
     start= r['waypoints'][0]['name']
     end= r['waypoints'][1]['name']
 
-    a=(f'Distance: {dist:.2f} miles away.')
-    b=(f'Duration: {dura:.0f} minutes away.')
-    c=(f'Start Location: {start}') #starting street name
-    d=(f'End Location: {end}') #ending street name
-
-    display = tkinter.Label(window, text= f'{a} \n {b} \n {c} \n {d} \n Directions:') 
-    display.grid(sticky = "W") 
+    label = tkinter.Label(window, text = f'Distance: {dist:.2f} miles away')
+    label.grid(sticky = "W") 
+    label1 = tkinter.Label(window, text = f'Duration: {dura:.0f} minutes away')
+    label1.grid(sticky = "W") 
+    label2 = tkinter.Label(window, text = f'Start Location: {start}') #starting street name
+    label2.grid(sticky = "W") 
+    label3 = tkinter.Label(window, text = f'End Location: {end}') #ending street name
+    label3.grid(sticky = "W")
+    label4 = tkinter.Label(window, text = "Directions:")
+    label4.grid(sticky = "W")
 
     ct=0
-    steps = r['routes'][0]['legs'][0]
+    steps = r['routes'][0]['legs'][0]['steps']
     for s in range(len(steps)):
         ct+=1
-        label = tkinter.Label(window, text = f"Step {str(ct)}: {r['routes'][0]['legs'][0]['steps'][s]['maneuver']['instruction']}")
-        label.grid(sticky = "W")
+        label5 = tkinter.Label(window, text = f"Step {str(ct)}: {steps[s]['maneuver']['instruction']}")
+        label5.grid(sticky = "W")
 
 root = tkinter.Tk() #root object type = Tk
 root.title("Directions")
