@@ -5,11 +5,18 @@ from bs4 import BeautifulSoup
 import matplotlib.pyplot as plt
 import imageio
 
+key= "GYwDUxWmfj5OHNG5J8adH3AG8LQv8izj"
+endpoint= "https://api.tomtom.com/routing/1/calculateRoute/"
+query= "/xml?avoid=unpavedRoads&key="
+
+#example ones
 vlat= "40.0370601"
 vlong= "-75.3457687"
 danlat= "40.0452466"
 danlong= "-75.4089339"
-r = requests.get("https://api.tomtom.com/routing/1/calculateRoute/"+vlat+","+vlong+":"+danlat+","+danlong+"/xml?avoid=unpavedRoads&key=GYwDUxWmfj5OHNG5J8adH3AG8LQv8izj")
+
+url= endpoint+vlat+","+vlong+":"+danlat+","+danlong+query+key
+r = requests.get(url)
 print(r) #response = 200 is good
 
 #beautiful soup
@@ -32,17 +39,29 @@ plt.scatter(long,lat)
 plt.title('Route from TomTom API')
 plt.show()
 
-r2 = requests.get("https://api.tomtom.com/map/1/staticimage?layer=basic&style=main&format=png&bbox=-122.577756%2C37.636133%2C-122.361772%2C37.841723&view=Unified&key=GYwDUxWmfj5OHNG5J8adH3AG8LQv8izj")
-print(r2) # Get the image for our map (MAKE SURE YOU PUT YOUR API KEY IN)
+# z= "10" #what zoom they want -maybe drop down?idk
+# zoom= "&zoom="+z
+endpoint2= "https://api.tomtom.com/map/1/staticimage?layer=basic&style=main&format=png&center="#+zoom after png
+query2= "&width=5120&height=5120&view=Unified&key="
+#example ones
+#centerlong= "52.379031"
+#centerlat= "4.899886"
+centerlat=(float(vlat)+float(danlat))/2
+centerlong=(float(vlong)+float(danlong))/2
+
+url2= endpoint2+str(centerlat)+"%2C%20"+str(centerlong)+query2+key
+r2 = requests.get(url2)
+print(r2) # Get the image for our map
 
 # Import the library to read the image
 im = imageio.imread(r2.content)# Read the image from the request
 
+
 plt.figure(figsize=(20,20))# Create the figure
-plt.imshow(im, extent = (-122.577756,-122.361772,37.636133,37.841723))# Show the image
+plt.imshow(im, origin = (centerlat,centerlong))# Show the image
 plt.show()
 
 plt.figure(figsize=(20,20))
-plt.imshow(im, extent = (-122.577756,-122.361772,37.636133,37.841723))
+plt.imshow(im, origin = (centerlat, centerlong))
 plt.scatter(long,lat)
 plt.show()
