@@ -80,7 +80,7 @@ def main():
     box.set("Select an option from the list to get more information")
     box.grid(columnspan = 4, row=4)
     
-#Function to display graph of price rating for each restaurant
+#Function to display graph of price range for each restaurant
 def graph():
     r = []
     p = [] 
@@ -128,7 +128,7 @@ def graph():
     ax1.yaxis.set_major_locator(MaxNLocator(integer=True))
     ax1.set_ylim(0,4)
 
-#Function displays graph of price rating vs restaurant rating ratio for each restaurant in the list
+#Function displays graph of restaurant rating vs price range ratio for each restaurant in the list
 def ratio():
     global rat
     global button3
@@ -283,7 +283,7 @@ def detail():
         label3 = tkinter.Label(win, background = "#cfe3fc", text = "No price information")
         label3.grid(sticky = "W")
     else:
-        label3 = tkinter.Label(win, background = "#cfe3fc", text = f"Price rating: {a['price']}")
+        label3 = tkinter.Label(win, background = "#cfe3fc", text = f"Price range: {a['price']}")
         label3.grid(sticky = "W")
     
     #Avoid program to crash if there is no hours information
@@ -486,7 +486,7 @@ userInput3.grid(row = 3, column = 1)
 button = tkinter.Button(root, text="Go!", background = "#829dfc", command = lambda: [query(), main()])
 button.grid (row = 1, column = 2)
 
-#Create button to show price rating graph
+#Create button to show price range graph
 button1 = tkinter.Button(root, text="Price Range", background = "#829dfc", width = 15,  command = lambda: [graph()])
 button1.grid (row = 0, column = 6)
 
