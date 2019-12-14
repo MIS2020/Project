@@ -106,6 +106,8 @@ def graph():
     ax1.set_ylabel("Price Rating ($ - $$$$)", fontsize = "9")
     ax1.set_xlabel("Restaurant Name", fontsize = "9")
     ax1.tick_params(labelsize = '7')
+    from matplotlib.ticker import MaxNLocator
+    ax1.yaxis.set_major_locator(MaxNLocator(integer=True))
     ax1.set_ylim(0,4)
 
 #Function displays graph of price rating vs restaurant rating ratio for each restaurant in the list
