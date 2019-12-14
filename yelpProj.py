@@ -111,7 +111,7 @@ def graph():
     ax1 = figure1.add_subplot(211)
     bar1 = FigureCanvasTkAgg(figure1, win)
     bar1.get_tk_widget().grid(row = 0)
-    df.plot(kind='bar', x= 'Restaurant', y= 'Price', color = '#000099', ax = ax1)
+    df.plot(kind='bar', x= 'Restaurant', y= 'Price', color = '#829dfc', ax = ax1)
     ax1.set_title("Price Range of Each Restaurant in the List", fontsize = "10")
     ax1.set_ylabel("Price Range ($ - $$$$)", fontsize = "9")
     ax1.set_xlabel("Restaurant Name", fontsize = "9")
@@ -256,7 +256,7 @@ def detail():
 
     win = tkinter.Toplevel()
     win.title("Restaurant detail")
-    win.geometry("800x500")
+    # win.geometry("800x500")
     win.config(background = "#cfe3fc")
     query2 = f'businesses/'
     url2 = endpoint + query2 + rid[box.current()]
@@ -424,7 +424,7 @@ def dmap():
 
     pin1= "pin-s-a+000"+f'({loc(userInput2.get())})' #lon,lat #black start
     pin2= "pin-s-b+ff0000"+f'({long},{lat})' #red end
-    path= "path-5+0080ff-0.5"+f'({pathline})' #blue line
+    path= "path-5+829dfc-0.75"+f'({pathline})' #blue line
     size2 = "500x300"
 
     url2 = f'{endpoint2}/{pin1},{pin2},{path}/auto/{size2}?access_token={apiKeyMap}'
